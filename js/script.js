@@ -1,13 +1,13 @@
 window.addEventListener('DOMContentLoaded', function() {
 
     // Tabs
-    
+
 	let tabs = document.querySelectorAll('.tabheader__item'),
 		tabsContent = document.querySelectorAll('.tabcontent'),
 		tabsParent = document.querySelector('.tabheader__items');
 
 	function hideTabContent() {
-        
+
         tabsContent.forEach(item => {
             item.classList.add('hide');
             item.classList.remove('show', 'fade');
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', function() {
         tabsContent[i].classList.remove('hide');
         tabs[i].classList.add('tabheader__item_active');
     }
-    
+
     hideTabContent();
     showTabContent();
 
@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function() {
             });
 		}
     });
-    
+
     // Timer
 
     const deadline = '2020-05-11';
@@ -60,7 +60,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     function getZero(num){
-        if (num >= 0 && num < 10) { 
+        if (num >= 0 && num < 10) {
             return '0' + num;
         } else {
             return num;
@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('keydown', (e) => {
-        if (e.code === "Escape" && modal.classList.contains('show')) { 
+        if (e.code === "Escape" && modal.classList.contains('show')) {
             closeModal();
         }
     });
@@ -151,11 +151,11 @@ window.addEventListener('DOMContentLoaded', function() {
             this.classes = classes;
             this.parent = document.querySelector(parentSelector);
             this.transfer = 27;
-            this.changeToUAH(); 
+            this.changeToUAH();
         }
 
         changeToUAH() {
-            this.price = this.price * this.transfer; 
+            this.price = this.price * this.transfer;
         }
 
         render() {
@@ -233,17 +233,17 @@ window.addEventListener('DOMContentLoaded', function() {
             },
             body: data
         });
-    
+
         return await res.json();
     };
 
     async function getResource(url) {
         let res = await fetch(url);
-    
+
         if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status: ${res.status}`);
         }
-    
+
         return await res.json();
     }
 
@@ -258,7 +258,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 margin: 0 auto;
             `;
             form.insertAdjacentElement('afterend', statusMessage);
-        
+
             const formData = new FormData(form);
 
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
@@ -298,4 +298,53 @@ window.addEventListener('DOMContentLoaded', function() {
             closeModal();
         }, 4000);
     }
+
+    //Slider
+
+    const slides = document.querySelectorAll('.offer__slide'),
+          prev = document.querySelector('.offer__slider-prev'),
+          next = document.querySelector('.offer__slider-next'),
+          total = document.querySelector('#total'),
+          current = document.querySelector('#current');
+
+    let slideIndex = 1;
+
+    showSlides(slideIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
+    }
+
+    function showSlides(index) {
+        if (index > slides.length) {
+            slideIndex = 1;
+        }
+        if (index < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach(item => item.style.display = 'none');
+        slides[slideIndex - 1].style.display = 'block';
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+    }
+
+    function plusSlides(index) {
+        showSlides(slideIndex += index);
+    }
+
+    prev.addEventListener('click', () => {
+        plusSlides(-1);
+    })
+
+    next.addEventListener('click', () => {
+        plusSlides(1);
+    })
+
 });
